@@ -4,11 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\StudySession;
 use App\Models\Task;
+use App\Services\StreakService;
+use App\Services\RecommendationService;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Goal;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function __construct(private StreakService $streakService)
+    {
+    }
+
+    public function index(RecommendationService $recommendationService)
     {
         $userId = Auth::id();
 
@@ -33,13 +40,16 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // Simple placeholder pick until Unit 10's real scoring engine:
-        // highest priority, then soonest deadline, among incomplete tasks.
-        $recommendedTask = Task::where('user_id', $userId)
-            ->where('status', '!=', 'completed')
-            ->orderByRaw("FIELD(priority, 'high','medium','low')")
-            ->orderByRaw('deadline IS NULL, deadline ASC')
-            ->first();
+        $topRecommendation = $recommendationService->getTopRecommendation($userId);
+
+        $currentStreak = $this->streakService->currentStreak($userId);
+        $longestStreak = $this->streakService->longestStreak($userId);
+
+        $activeGoal = Goal::where('user_id', $userId)
+    ->whereDate('start_date', '<=', now())
+    ->whereDate('end_date', '>=', now())
+    ->orderByRaw("FIELD(type, 'daily','weekly','monthly')")
+    ->first();
 
         return view('dashboard.index', compact(
             'todayTasks',
@@ -47,7 +57,10 @@ class DashboardController extends Controller
             'totalToday',
             'studyMinutesToday',
             'upcomingDeadlines',
-            'recommendedTask'
+            'topRecommendation',
+            'currentStreak',
+            'longestStreak',
+            'activeGoal'
         ));
     }
 }

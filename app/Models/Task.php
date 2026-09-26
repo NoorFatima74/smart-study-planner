@@ -22,11 +22,16 @@ class Task extends Model
         'deadline',
         'status',
         'completed_at',
+        'original_deadline',
+       'rescheduled_at',
+       'reschedule_count',
     ];
 
     protected $casts = [
         'deadline' => 'datetime',
         'completed_at' => 'datetime',
+        'original_deadline' => 'datetime',
+        'rescheduled_at' => 'datetime',
     ];
 
     public function user(): BelongsTo

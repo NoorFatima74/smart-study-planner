@@ -5,6 +5,7 @@
 @section('page-subtitle', '')
 
 @section('content')
+<a href="{{ route('subjects.index') }}" class="back-link">← Back to subjects</a>
     <div class="card" style="max-width:480px;">
         <form method="POST" action="{{ route('subjects.store') }}">
             @csrf

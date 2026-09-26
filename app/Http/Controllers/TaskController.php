@@ -7,6 +7,8 @@ use App\Models\Subject;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\GamificationService;
+
 
 class TaskController extends Controller
 {
@@ -72,22 +74,29 @@ class TaskController extends Controller
         return view('tasks.edit', compact('task', 'subjects'));
     }
 
-    public function update(UpdateTaskRequest $request, Task $task)
-    {
-        $this->authorize('update', $task);
+    public function update(UpdateTaskRequest $request, Task $task, GamificationService $gamification)
+{
+    $this->authorize('update', $task);
 
-        $validated = $request->validated();
+    $validated = $request->validated();
 
-        if ($validated['status'] === 'completed' && $task->status !== 'completed') {
-            $validated['completed_at'] = now();
-        } elseif ($validated['status'] !== 'completed') {
-            $validated['completed_at'] = null;
-        }
+    $isNewlyCompleted = $validated['status'] === 'completed' && $task->status !== 'completed';
 
-        $task->update($validated);
-
-        return redirect()->route('tasks.show', $task)->with('status', 'Task updated.');
+    if ($isNewlyCompleted) {
+        $validated['completed_at'] = now();
+    } elseif ($validated['status'] !== 'completed') {
+        $validated['completed_at'] = null;
     }
+
+    $task->update($validated);
+
+    if ($isNewlyCompleted) {
+        $result = $gamification->awardTaskCompletionXp(auth()->user(), $task);
+        session()->flash('gamification', $result);
+    }
+
+    return redirect()->route('tasks.show', $task)->with('status', 'Task updated.');
+}
 
     public function destroy(Task $task)
     {
@@ -98,6 +107,16 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('status', 'Task deleted.');
     }
 
+    public function complete(Task $task, GamificationService $gamification)
+{
+    $this->authorize('update', $task);
+
+    $task->update(['status' => 'completed', 'completed_at' => now()]);
+
+    $result = $gamification->awardTaskCompletionXp(auth()->user(), $task);
+
+    return response()->json($result);
+}
 
 
 }

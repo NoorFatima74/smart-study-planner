@@ -21,16 +21,29 @@
                 <h1>@yield('page-title', 'Welcome')</h1>
                 <div class="sub">@yield('page-subtitle', '')</div>
             </div>
-            <div class="avatar">{{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : '?' }}</div>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="logout-link">Logout</button>
+                </form>
+                <div class="avatar">
+                    <a href="{{ route('profile.edit') }}" style="color:inherit; text-decoration:none; display:flex; align-items:center; justify-content:center; width:100%; height:100%;">
+                        {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : '?' }}
+                    </a>
+                </div>
+            </div>
         </div>
 
-            @yield('content')
+        @yield('content')
     </main>
 
     @yield('scripts')
 
-</body>
-</html>
+    @if (session('gamification'))
+        <script>
+            window.gamificationData = @json(session('gamification'));
+        </script>
+    @endif
 
 </body>
 </html>

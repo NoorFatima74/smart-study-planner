@@ -41,4 +41,33 @@ class User extends Authenticatable
    {
     return $this->hasMany(StudySession::class);
     }
+
+
+    public function goals(): HasMany
+   {
+    return $this->hasMany(Goal::class);
+   }
+
+   public function achievements()
+{
+    return $this->belongsToMany(Achievement::class, 'user_achievements')
+        ->withPivot('earned_at')
+        ->withTimestamps();
+}
+
+public function xpToNextLevel(): int
+{
+    $needed = $this->level * 100;
+    $currentLevelFloor = ($this->level - 1) * 100;
+    return $needed - $this->xp;
+}
+
+public function levelProgressPercent(): int
+{
+    $currentLevelFloor = ($this->level - 1) * 100;
+    $currentLevelCeil = $this->level * 100;
+    $span = $currentLevelCeil - $currentLevelFloor;
+    $earned = $this->xp - $currentLevelFloor;
+    return (int) round(($earned / $span) * 100);
+}
 }
