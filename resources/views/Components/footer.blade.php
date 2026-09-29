@@ -5,5 +5,5 @@
         <a href="{{ url('/about') }}">About</a>
         <a href="{{ url('/contact') }}">Contact</a>
     </div>
-    <div class="footer-copy">&copy; {{ date('Y') }} Smart Study Planner</div>
+    <div class="footer-copy">&copy; {{ date('Y') }} NomaEd</div>
 </footer>

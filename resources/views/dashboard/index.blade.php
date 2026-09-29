@@ -1,12 +1,17 @@
+
+
+
 @extends('layouts.app')
 
 @section('title', 'Dashboard')
 @section('page-title', 'Welcome back, ' . auth()->user()->name)
+
 @section('page-subtitle', $totalToday > 0
     ? "You've completed {$completedToday} of {$totalToday} tasks today"
     : 'No tasks due today')
 
 @section('content')
+<x-planner-tabs />
     <div class="grid" style="grid-template-columns: repeat(4, 1fr); grid-auto-rows: min-content;">
 
        {{-- Recommended Next --}}

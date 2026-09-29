@@ -1,5 +1,5 @@
 <aside class="sidebar">
-    <div class="brand"><span class="brand-mark"></span>Planner</div>
+    <div class="brand"><span class="brand-mark"></span>NomaEd</div>
     <nav>
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <span class="dot"></span>Dashboard
@@ -16,12 +16,8 @@
         <a href="{{ url('/study-sessions') }}" class="{{ request()->is('study-sessions*') ? 'active' : '' }}">
             <span class="dot"></span>Study Sessions
         </a>
-        <a href="{{ url('/planner') }}" class="{{ request()->is('planner*') ? 'active' : '' }}">
-            <span class="dot"></span>Planner
-        </a>
-        <a href="{{ url('/recommendation') }}" class="{{ request()->is('recommendation*') ? 'active' : '' }}">
-            <span class="dot"></span>Recommendation
-        </a>
+       
+        
         <a href="{{ url('/goals') }}" class="{{ request()->is('goals*') ? 'active' : '' }}">
             <span class="dot"></span>Goals
         </a>

@@ -13,7 +13,7 @@
 <body class="auth-body">
 
     <div class="auth-card">
-        <a href="{{ url('/') }}" class="brand"><span class="brand-mark"></span>Planner</a>
+        <a href="{{ url('/') }}" class="brand"><span class="brand-mark"></span>NomaEd</a>
         @yield('content')
     </div>
 

@@ -30,7 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/planner/missed', [PlannerController::class, 'missed'])->name('planner.missed');
     Route::post('/planner/reschedule', [PlannerController::class, 'reschedule'])->name('planner.reschedule');
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
-
+    Route::get('/ai-planner', [App\Http\Controllers\AiPlannerController::class, 'create'])->name('ai-planner.create');
+    Route::post('/ai-planner/generate', [App\Http\Controllers\AiPlannerController::class, 'generate'])->name('ai-planner.generate');
+    Route::get('/ai-planner/review', [App\Http\Controllers\AiPlannerController::class, 'review'])->name('ai-planner.review');
+    Route::post('/ai-planner/save', [App\Http\Controllers\AiPlannerController::class, 'save'])->name('ai-planner.save');
 
     Route::prefix('study-sessions')->name('study-sessions.')->group(function () {
     Route::get('/', [StudySessionController::class, 'index'])->name('index');
@@ -44,4 +47,8 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/test-ai', function (\App\Services\AiService $ai) {
+    $result = $ai->generate('Reply with JSON: {"status": "ok", "message": "Gemini is connected"}');
+    return $result;
+});
 require __DIR__.'/auth.php';
