@@ -21,8 +21,6 @@ mkdir -p \
     /data/storage/framework/views \
     /data/storage/logs
 
-chown -R www-data:www-data /data/storage
-
 
 # ---------------------------------------------------------
 # Start Apache
