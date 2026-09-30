@@ -50,12 +50,11 @@ WORKDIR /var/www/html
 
 COPY . .
 
-# Copy Vite production assets
 COPY --from=frontend /app/public/build ./public/build
 
 
 # ---------------------------------------------------------
-# Install production PHP dependencies
+# Install production dependencies
 # ---------------------------------------------------------
 RUN composer install \
     --no-dev \
@@ -68,28 +67,26 @@ RUN composer install \
 # Apache configuration
 # ---------------------------------------------------------
 RUN printf '%s\n' \
-    '<VirtualHost *:80>' \
+    '<VirtualHost *:3000>' \
     '    DocumentRoot /var/www/html/public' \
     '    <Directory /var/www/html/public>' \
     '        AllowOverride All' \
     '        Require all granted' \
     '    </Directory>' \
     '</VirtualHost>' \
-    > /etc/apache2/sites-available/000-default.conf
+    > /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's/^Listen 80$/Listen 3000/' /etc/apache2/ports.conf
 
 
 # ---------------------------------------------------------
-# Prepare Laravel storage
-#
-# Deplexo provides persistent writable storage at /data.
-# Laravel's storage directory is linked there.
+# Persistent Laravel storage
 # ---------------------------------------------------------
 RUN rm -rf /var/www/html/storage \
+    && mkdir -p /data/storage \
     && ln -s /data/storage /var/www/html/storage
 
-
-# Public storage link
 RUN rm -f /var/www/html/public/storage \
+    && mkdir -p /data/storage/app/public \
     && ln -s /data/storage/app/public /var/www/html/public/storage
 
 
@@ -101,7 +98,6 @@ COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 
-# Apache listens on the PORT supplied by Deplexo
-EXPOSE 80
+EXPOSE 3000
 
 ENTRYPOINT ["docker-entrypoint.sh"]
