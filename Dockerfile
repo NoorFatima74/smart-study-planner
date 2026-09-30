@@ -1,6 +1,6 @@
-# =========================
-# Stage 1: Build Vite assets
-# =========================
+# =========================================================
+# Stage 1: Build Laravel Vite assets
+# =========================================================
 FROM node:24-alpine AS frontend
 
 WORKDIR /app
@@ -12,12 +12,14 @@ COPY . .
 RUN npm run build
 
 
-# =========================
-# Stage 2: Run Laravel
-# =========================
+# =========================================================
+# Stage 2: Laravel application
+# =========================================================
 FROM php:8.2-apache
 
-# Install required system packages and PHP extensions
+# ---------------------------------------------------------
+# System packages + PHP extensions
+# ---------------------------------------------------------
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -30,43 +32,76 @@ RUN apt-get update && apt-get install -y \
         bcmath \
         intl \
         opcache \
+        zip \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
+
+# ---------------------------------------------------------
+# Composer
+# ---------------------------------------------------------
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+
+# ---------------------------------------------------------
+# Laravel application
+# ---------------------------------------------------------
 WORKDIR /var/www/html
 
-# Copy Laravel project
 COPY . .
 
-# Copy compiled Vite assets
+# Copy Vite production assets
 COPY --from=frontend /app/public/build ./public/build
 
+
+# ---------------------------------------------------------
 # Install production PHP dependencies
+# ---------------------------------------------------------
 RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader
 
-# Configure Apache to serve Laravel's public directory
+
+# ---------------------------------------------------------
+# Apache configuration
+# ---------------------------------------------------------
 RUN printf '%s\n' \
-    '<VirtualHost *:10000>' \
+    '<VirtualHost *:80>' \
     '    DocumentRoot /var/www/html/public' \
     '    <Directory /var/www/html/public>' \
     '        AllowOverride All' \
     '        Require all granted' \
     '    </Directory>' \
     '</VirtualHost>' \
-    > /etc/apache2/sites-available/000-default.conf \
-    && sed -i 's/^Listen 80$/Listen 10000/' /etc/apache2/ports.conf
+    > /etc/apache2/sites-available/000-default.conf
 
-# Laravel needs write access
-RUN chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
 
-EXPOSE 10000
+# ---------------------------------------------------------
+# Prepare Laravel storage
+#
+# Deplexo provides persistent writable storage at /data.
+# Laravel's storage directory is linked there.
+# ---------------------------------------------------------
+RUN rm -rf /var/www/html/storage \
+    && ln -s /data/storage /var/www/html/storage
 
-CMD ["apache2-foreground"]
+
+# Public storage link
+RUN rm -f /var/www/html/public/storage \
+    && ln -s /data/storage/app/public /var/www/html/public/storage
+
+
+# ---------------------------------------------------------
+# Runtime entrypoint
+# ---------------------------------------------------------
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+
+# Apache listens on the PORT supplied by Deplexo
+EXPOSE 80
+
+ENTRYPOINT ["docker-entrypoint.sh"]
