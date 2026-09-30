@@ -2,10 +2,9 @@
 
 set -e
 
-# Deplexo supplies PORT at runtime.
-PORT="${PORT:-80}"
+PORT="${PORT:-3000}"
 
-# Configure Apache to use Deplexo's port.
+# Configure Apache to use Deplexo's runtime port
 sed -i "s/^Listen 80$/Listen ${PORT}/" /etc/apache2/ports.conf
 
 sed -i \
@@ -13,9 +12,14 @@ sed -i \
     /etc/apache2/sites-available/000-default.conf
 
 
-# ---------------------------------------------------------
-# Prepare persistent Laravel storage
-# ---------------------------------------------------------
+# Create Aiven CA certificate from the runtime environment variable
+if [ -n "${AIVEN_CA_BASE64:-}" ]; then
+    echo "$AIVEN_CA_BASE64" | base64 -d > /data/aiven-ca.pem
+    chmod 644 /data/aiven-ca.pem
+fi
+
+
+# Persistent Laravel storage
 mkdir -p \
     /data/storage/app/public \
     /data/storage/framework/cache \
@@ -23,12 +27,8 @@ mkdir -p \
     /data/storage/framework/views \
     /data/storage/logs
 
-
-# Make Laravel storage writable by Apache.
 chown -R www-data:www-data /data/storage
 
 
-# ---------------------------------------------------------
 # Start Apache
-# ---------------------------------------------------------
 exec apache2-foreground
