@@ -4,6 +4,8 @@
 .env.*
 node_modules
 vendor
+ca.pem
+
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
