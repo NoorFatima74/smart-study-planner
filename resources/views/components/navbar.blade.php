@@ -1,5 +1,5 @@
 <nav class="navbar">
-    <a href="{{ url('/') }}" class="brand"><span class="brand-mark"></span>NomaEd</a>
+   <img src="{{ asset('images/logo.png') }}" alt="NomaEd" class="logo-img">
     <div class="navbar-links">
         <a href="{{ url('/features') }}">Features</a>
         <a href="{{ url('/about') }}">About</a>

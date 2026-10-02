@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Smart Study Planner')</title>
+    <title>@yield('title', 'NomaEd')</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,9 +17,12 @@
 
     <main>
         <div class="topbar">
-            <div>
-                <h1>@yield('page-title', 'Welcome')</h1>
-                <div class="sub">@yield('page-subtitle', '')</div>
+            <div class="topbar-left">
+                <img src="{{ asset('images/logo.png') }}" alt="NomaEd" class="topbar-logo">
+                <div>
+                    <h1>@yield('page-title', 'Welcome')</h1>
+                    <div class="sub">@yield('page-subtitle', '')</div>
+                </div>
             </div>
             <div style="display:flex; align-items:center; gap:12px;">
                 <form method="POST" action="{{ route('logout') }}">
@@ -35,6 +38,8 @@
         </div>
 
         @yield('content')
+
+        <x-footer />
     </main>
 
     @yield('scripts')

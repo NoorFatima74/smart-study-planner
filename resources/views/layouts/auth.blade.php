@@ -13,7 +13,7 @@
 <body class="auth-body">
 
     <div class="auth-card">
-        <a href="{{ url('/') }}" class="brand"><span class="brand-mark"></span>NomaEd</a>
+       <img src="{{ asset('images/logo.png') }}" alt="NomaEd" class="logo-img">
         @yield('content')
     </div>
 

@@ -1,5 +1,5 @@
 <aside class="sidebar">
-    <div class="brand"><span class="brand-mark"></span>NomaEd</div>
+  <img src="{{ asset('images/logo.png') }}" alt="NomaEd" class="logo-img">
     <nav>
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <span class="dot"></span>Dashboard
