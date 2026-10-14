@@ -898,3 +898,30 @@ main { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; 
   .footer-top { grid-template-columns: 1fr 1fr; }
   .topbar-left { gap: 10px; }
 }
+
+/* ---------- AI plan table ---------- */
+.plan-day { padding: 16px 20px; margin-bottom: 14px; }
+.plan-table-wrap { overflow-x: auto; }
+.plan-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.plan-table th {
+  text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.4px; color: var(--text-low); padding: 8px 10px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.plan-table td { padding: 12px 10px; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.plan-table tr:last-child td { border-bottom: none; }
+.plan-time { color: var(--text-low); white-space: nowrap; font-size: 12px; }
+.plan-title { font-weight: 600; color: var(--text-hi); margin-top: 6px; }
+.plan-steps { list-style: none; display: flex; flex-direction: column; gap: 4px; color: var(--text-mid); }
+.plan-steps li::before { content: '•'; color: var(--violet); margin-right: 6px; }
+.plan-why { color: var(--text-low); font-size: 12px; max-width: 200px; }
+.plan-duration { color: var(--violet); font-weight: 700; white-space: nowrap; }
+
+.hl { color: var(--teal); font-weight: 600; background: rgba(245,198,125,0.12); padding: 0 4px; border-radius: 4px; }
+
+.chip { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 100px; }
+.chip-setup    { background: rgba(166,156,142,0.15); color: #A69C8E; }
+.chip-theory   { background: rgba(240,164,69,0.15);  color: #F0A445; }
+.chip-practice { background: rgba(245,198,125,0.15); color: #F5C67D; }
+.chip-review   { background: rgba(216,120,90,0.15);  color: #D8785A; }
+.chip-break    { background: rgba(255,255,255,0.07); color: var(--text-low); }
