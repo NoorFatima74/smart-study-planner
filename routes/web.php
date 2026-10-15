@@ -11,6 +11,7 @@ use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\PlannerController;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\QuizController;
 
 Route::get('/', function () {
     return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
@@ -34,6 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/ai-planner/generate', [App\Http\Controllers\AiPlannerController::class, 'generate'])->name('ai-planner.generate');
     Route::get('/ai-planner/review', [App\Http\Controllers\AiPlannerController::class, 'review'])->name('ai-planner.review');
     Route::post('/ai-planner/save', [App\Http\Controllers\AiPlannerController::class, 'save'])->name('ai-planner.save');
+    Route::get('/quiz', [QuizController::class, 'create'])->name('quiz.create');
+    Route::post('/quiz/generate', [QuizController::class, 'generate'])->name('quiz.generate');
+    Route::get('/quiz/{quiz}', [QuizController::class, 'show'])->name('quiz.show');
+    Route::post('/quiz/{quiz}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
+    Route::get('/quiz/{quiz}/result', [QuizController::class, 'result'])->name('quiz.result');
 
     Route::prefix('study-sessions')->name('study-sessions.')->group(function () {
     Route::get('/', [StudySessionController::class, 'index'])->name('index');
