@@ -5,6 +5,7 @@
 @section('page-subtitle', '')
 
 @section('content')
+<x-back-link :href="route('goals.index')" label="Back to goals" />
     <div class="card" style="max-width:480px;">
         <form method="POST" action="{{ route('goals.update', $goal) }}">
             @csrf

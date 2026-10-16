@@ -5,6 +5,7 @@
 @section('page-subtitle', $subject->description ?? '')
 
 @section('content')
+<x-back-link :href="route('subjects.index')" label="Back to subjects" />
     <div class="card">
         <h3 style="margin-bottom:12px;">Tasks</h3>
 

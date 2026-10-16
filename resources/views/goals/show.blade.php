@@ -5,6 +5,7 @@
 @section('page-subtitle', $goal->start_date->format('M j') . ' – ' . $goal->end_date->format('M j, Y'))
 
 @section('content')
+<x-back-link :href="route('goals.index')" label="Back to goals" />
     <div class="card" style="max-width:480px;">
         <div class="goal-target">{{ $goal->minutesLogged() }} / {{ $goal->target_minutes }} min</div>
         <div class="bar-track" style="margin-top:14px;">

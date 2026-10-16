@@ -10,6 +10,7 @@
             <p style="color:var(--text-mid);">
                 You need at least one subject before adding a task.
                 <a href="{{ route('subjects.create') }}" style="color:var(--violet);">Create one first</a>.
+                <x-back-link :href="route('tasks.index')" label="Back to tasks" />
             </p>
         @else
             <form method="POST" action="{{ route('tasks.store') }}">

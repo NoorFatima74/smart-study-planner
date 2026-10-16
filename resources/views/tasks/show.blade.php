@@ -5,6 +5,7 @@
 @section('page-subtitle', $task->subject->name)
 
 @section('content')
+<x-back-link :href="route('tasks.index')" label="Back to tasks" />
     <div class="card task-detail">
         <div class="task-detail-grid">
             <div><span class="label">Priority</span><span class="pill {{ $task->priority === 'high' ? 'high' : 'med' }}">{{ ucfirst($task->priority) }}</span></div>

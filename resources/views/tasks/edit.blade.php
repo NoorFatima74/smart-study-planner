@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="card" style="max-width:520px;">
+        <x-back-link :href="route('tasks.index')" label="Back to tasks" />
         <form method="POST" action="{{ route('tasks.update', $task) }}">
             @csrf
             @method('PUT')

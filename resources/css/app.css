@@ -985,3 +985,13 @@ label.quiz-option:hover { border-color: var(--violet-soft); }
 
 .quiz-explain { margin-top: 12px; font-size: 12.5px; color: var(--text-mid); border-left: 3px solid var(--violet); padding-left: 10px; }
 .quiz-explain b { color: var(--teal); }
+
+.back-link {
+  display: inline-block;
+  color: var(--text-mid);
+  text-decoration: none;
+  font-size: 13.5px;
+  margin-bottom: 4px;
+  transition: color 0.15s ease;
+}
+.back-link:hover { color: var(--violet); }

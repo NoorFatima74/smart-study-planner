@@ -9,6 +9,7 @@
         <div class="card" style="border-color:#e74c3c; margin-bottom:16px; color:#e74c3c; font-size:13px; padding:12px;">
             {{ $errors->first() }}
         </div>
+        <x-back-link :href="route('dashboard')" label="Dashboard" />
     @endif
 
     <form method="POST" action="{{ route('quiz.generate') }}" class="ai-form" id="quiz-gen-form">

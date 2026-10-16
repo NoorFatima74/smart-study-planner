@@ -15,6 +15,7 @@
         <div class="quiz-score-num">{{ $quiz->score }}/{{ $total }}</div>
         <div class="quiz-score-pct">{{ $pct }}% correct</div>
         <div class="quiz-score-msg">{{ $msg }}</div>
+        <x-back-link :href="route('quiz.create')" label="Back to AI Quiz" />
     </div>
 
     @foreach ($quiz->questions as $i => $q)

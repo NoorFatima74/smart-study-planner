@@ -5,6 +5,7 @@
 @section('page-subtitle', '')
 
 @section('content')
+<x-back-link :href="route('subjects.index')" label="Back to subjects" />
     <div class="card" style="max-width:480px;">
         <form method="POST" action="{{ route('subjects.update', $subject) }}">
             @csrf
